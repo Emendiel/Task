@@ -10,6 +10,14 @@
     <link rel="stylesheet"
           href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
 
+    {% stylesheets filter="compass" output="css/frontend.css"
+    "@AppBundle/Resources/compass/*.scss" %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
     {% block headers %}
     {% endblock headers %}
 </head>
@@ -17,21 +25,32 @@
 
 <div class="container-fluid">
     <div class="row">
+        <header class="col-md-12">
+            <div class="col-md-2 st_logo">
+                Sulon-Task
+            </div>
+        </header>
 
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <div class="col-sm-3 col-md-2 sidebar">
+        <nav class="col-md-2">
+            <ul>
+                <li><a href="#">London</a></li>
+                <li><a href="#">Paris</a></li>
+                <li><a href="#">Tokyo</a></li>
+            </ul>
+        </nav>
 
-        </div>
+        <section class="col-md-10">
+        {% else %}
+        <section class="col-md-12">
+        {% endif %}
+            {% block content %}
+            {% endblock content %}
+        </section>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            {% else %}
-            <div class="col-sm-12 col-md-12 main">
-                {% endif %}
-
-                {% block content %}
-                {% endblock content %}
-            </div>
-        </div>
+        <footer class="col-md-12 text-center">
+            Sulon : 2010-2016
+        </footer>
     </div>
 </div><!-- /.container -->
 

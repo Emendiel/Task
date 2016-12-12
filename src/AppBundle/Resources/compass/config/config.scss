@@ -1,0 +1,22 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/css3";
+@import "compass/utilities";
+
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light|Ubuntu:300,300i,400,400i,500,500i,700,700i');
+
+
+$svg-gradient-shim-threshold: 1;
+$experimental-support-for-microsoft: true;
+$experimental-support-for-svg: true;
+
+$font-size-base:          14px;
+$line-height-base:        1.428571429;
+$line-height-computed:    floor(($font-size-base * $line-height-base));
+
+html, * {
+    font-family: 'Ubuntu', sans-serif;
+}

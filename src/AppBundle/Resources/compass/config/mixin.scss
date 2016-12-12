@@ -1,0 +1,18 @@
+@import "variables";
+
+// Mixin
+
+@mixin placeholder {
+    ::-webkit-input-placeholder {@content}
+    :-moz-placeholder           {@content}
+    ::-moz-placeholder          {@content}
+    :-ms-input-placeholder      {@content}
+}
+
+* {
+    @include placeholder {
+        font-style:italic;
+        color: $black90;
+        font-weight:100;
+    }
+}

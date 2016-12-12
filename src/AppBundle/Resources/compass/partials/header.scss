@@ -1,0 +1,13 @@
+@import "../config/variables";
+
+header {
+    color: $black50;
+    background-color: $blackNero;
+
+    .st_logo {
+        color: $black30;
+        font-family: 'Shadows Into Light', cursive;
+        font-weight: bold;
+        font-size: 24px;
+    }
+}
