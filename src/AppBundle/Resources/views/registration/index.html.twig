@@ -1,0 +1,12 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="st_login col-md-4 col-md-offset-4">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock content %}

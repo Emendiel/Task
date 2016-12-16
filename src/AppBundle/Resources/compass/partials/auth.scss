@@ -1,0 +1,12 @@
+@import "../config/variables";
+
+.st_login {
+    background-color: $blackNero;
+
+    @include border-radius(5px);
+    @include box-shadow(2px 2px 2px $blackNero);
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
