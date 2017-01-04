@@ -6,9 +6,9 @@ security:
             algorithm: bcrypt
             cost: 12
     role_hierarchy:
-        ROLE_FRONTEND:  [ROLE_FRONTEND]
-        ROLE_BACKEND:   [ROLE_BACKEND, ROLE_FRONTEND, ROLE_ALLOWED_TO_SWITCH]
-        ROLE_ADMIN:     [ROLE_BACKEND, ROLE_ALLOWED_TO_SWITCH]
+        FRONTEND:  [ROLE_FRONTEND]
+        BACKEND:   [ROLE_BACKEND, ROLE_FRONTEND, ROLE_ALLOWED_TO_SWITCH]
+        ADMIN:     [ROLE_BACKEND, ROLE_ALLOWED_TO_SWITCH]
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
@@ -40,3 +40,5 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/, roles: ROLE_FRONTEND }
+        # require ROLE_ADMIN for /admin*
+        - { path: ^/admin, roles: ROLE_ADMIN }
