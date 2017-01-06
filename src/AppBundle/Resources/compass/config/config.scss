@@ -16,7 +16,3 @@ $experimental-support-for-svg: true;
 $font-size-base:          14px;
 $line-height-base:        1.428571429;
 $line-height-computed:    floor(($font-size-base * $line-height-base));
-
-html, * {
-    font-family: 'Ubuntu', sans-serif;
-}

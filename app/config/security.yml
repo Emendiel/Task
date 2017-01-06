@@ -8,7 +8,7 @@ security:
     role_hierarchy:
         FRONTEND:  [ROLE_FRONTEND]
         BACKEND:   [ROLE_BACKEND, ROLE_FRONTEND, ROLE_ALLOWED_TO_SWITCH]
-        ADMIN:     [ROLE_BACKEND, ROLE_ALLOWED_TO_SWITCH]
+        ADMIN:     [ROLE_ADMIN, ROLE_BACKEND, ROLE_ALLOWED_TO_SWITCH]
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
@@ -16,6 +16,7 @@ security:
         main:
             entity:
                 class: AppBundle\Entity\User
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -25,8 +26,7 @@ security:
 
         main:
             pattern:    ^/
-            anonymous: ~
-            http_basic: ~
+            anonymous: true
             provider: main
             switch_user: { role: ROLE_ALLOWED_TO_SWITCH, parameter: _want_to_be }
             form_login:
@@ -39,6 +39,6 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/, roles: ROLE_FRONTEND }
+        - { path: ^/, roles: ROLE_FRONTEND }
         # require ROLE_ADMIN for /admin*
         - { path: ^/admin, roles: ROLE_ADMIN }

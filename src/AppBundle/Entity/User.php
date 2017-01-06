@@ -2,9 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -12,9 +10,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface
 {
+    CONST staticSalt = 'X1542';
     /**
      * @var int
      *
@@ -67,10 +67,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $password;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(
-     *  targetEntity="AppBundle\Entity\Role", inversedBy="users", cascade={"persist", "merge"})
+     * @ORM\Column(type="array", nullable=true, name="roles")
      */
     private $roles;
 
@@ -85,20 +82,13 @@ class User implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->dateCreate = new \Datetime();
-        $this->roles = new ArrayCollection();
         $this->isActive = true;
+        $this->roles = array('FRONTEND');
     }
 
     /**********************************
      * Required Implements
      *********************************/
-
-    /**
-     * erase credentials
-     */
-    public function eraseCredentials()
-    {
-    }
 
     /**
      * Get roles
@@ -107,7 +97,17 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
-        return [];
+        return $this->roles;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     /**
@@ -117,92 +117,38 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getSalt()
     {
-        return '1234';
+        return $this::staticSalt;
     }
 
     /**
-     * @return bool
-     */
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @see \Serializable::serialize()
+     * Get username
+     *
      * @return string
      */
-    public function serialize()
+    public function getUsername()
     {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-        ));
+        return $this->username;
     }
 
     /**
-     * @see \Serializable::unserialize()
-     * @param string $serialized
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
      */
-    public function unserialize($serialized)
+    public function eraseCredentials()
     {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-            ) = unserialize($serialized);
-    }
-
-    public function isEqualTo(UserInterface $user) {
-        if ($user instanceof User) {
-            // Check that the roles are the same, in any order
-            $isEqual = count($this->getRoles()) == count($user->getRoles());
-            if ($isEqual) {
-                foreach($this->getRoles() as $role) {
-                    $isEqual = $isEqual && in_array($role, $user->getRoles());
-                }
-            }
-            return $isEqual;
-        }
-
-        return false;
     }
 
     /**********************************
      * CORE METHODS
      *********************************/
 
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -210,9 +156,10 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set date_create
+     * Set dateCreate
      *
      * @param \DateTime $dateCreate
+     *
      * @return User
      */
     public function setDateCreate($dateCreate)
@@ -223,7 +170,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get date_create
+     * Get dateCreate
      *
      * @return \DateTime
      */
@@ -244,16 +191,6 @@ class User implements AdvancedUserInterface, \Serializable
         $this->username = $username;
 
         return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
     }
 
     /**
@@ -343,58 +280,40 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get password
+     * Set roles
      *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Add roles
+     * @param array $roles
      *
-     * @param Role $roles
      * @return User
      */
-    public function addRole(Role $roles)
+    public function setRoles(array $roles)
     {
-        $this->roles[] = $roles;
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * Remove roles
+     * Set isActive
      *
-     * @param Role $roles
-     */
-    public function removeRole(Role $roles)
-    {
-        $this->roles->removeElement($roles);
-    }
-
-    /**
-     * Set status
+     * @param boolean $isActive
      *
-     * @param boolean $status
      * @return User
      */
-    public function setStatus($status)
+    public function setIsActive($isActive)
     {
-        $this->status = $status;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get isActive
      *
      * @return boolean
      */
-    public function getStatus()
+    public function getIsActive()
     {
-        return $this->status;
+        return $this->isActive;
     }
 }

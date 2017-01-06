@@ -33,9 +33,6 @@ class RegistrationController extends Controller
                 $hash = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
                 $user->setPassword($hash);
 
-                $roleFrontend = $em->getRepository('AppBundle:Role')->findOneBy(["name" => "Frontend"]);
-                $user->addRole($roleFrontend);
-
                 $em->persist($user);
                 $em->flush();
 
