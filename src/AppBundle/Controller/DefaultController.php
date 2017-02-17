@@ -14,14 +14,15 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $authChecker = $this->get('security.authorization_checker');
+        return $this->render('AppBundle:default:index.html.twig');
+    }
 
-//        dump($this->getUser());die();
-
-//        $this->denyAccessUnlessGranted('ROLE_FRONTEND', null, 'Unable to access this page!');
-
-        // replace this example code with whatever you need
-        return $this->render('AppBundle:default:base.html.twig');
+    /**
+     * @Route("/example", name="Exemple")
+     */
+    public function exampleAction(Request $request)
+    {
+        return $this->render('AppBundle:default:example.html.twig');
     }
 
     /**
